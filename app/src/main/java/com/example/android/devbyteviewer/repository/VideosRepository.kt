@@ -17,9 +17,18 @@
 
 package com.example.android.devbyteviewer.repository
 
-// TODO (01) Create a VideosRepository class that takes a VideosDatabase argument.
+import com.example.android.devbyteviewer.database.VideosDatabase
+import com.example.android.devbyteviewer.network.Network
+import com.example.android.devbyteviewer.network.asDatabaseModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-// TODO (02) Define a suspend refreshVideos() function that gets data from the network and
-// inserts it into the database.
+class VideosRepository(val database : VideosDatabase){
+    suspend fun refreshVideo(){
+        withContext(Dispatchers.IO){
+            val playlist = Network.devbytes.getPlaylist().await()
+            database.videoDao.insertAll(*playlist.asDatabaseModel())
+        }
+    }
+}
 
-// TODO (03) Define a Transformations.map  to convert the DatabaseVideo list to a list of Video.

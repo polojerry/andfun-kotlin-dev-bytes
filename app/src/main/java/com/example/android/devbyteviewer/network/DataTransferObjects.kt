@@ -17,6 +17,7 @@
 
 package com.example.android.devbyteviewer.network
 
+import com.example.android.devbyteviewer.database.DatabaseVideo
 import com.example.android.devbyteviewer.domain.Video
 import com.squareup.moshi.JsonClass
 
@@ -26,8 +27,6 @@ import com.squareup.moshi.JsonClass
  * using them.
  */
 
-// TODO (03) Define extension function NetworkVideoHolder.asDatabaseModel(),
-// that returns an array of <DatabaseVideo>.
 
 /**
  * VideoHolder holds a list of Videos.
@@ -65,4 +64,16 @@ fun NetworkVideoContainer.asDomainModel(): List<Video> {
                 updated = it.updated,
                 thumbnail = it.thumbnail)
     }
+}
+
+fun NetworkVideoContainer.asDatabaseModel() : Array<DatabaseVideo>{
+    return videos.map {
+        DatabaseVideo(
+                url = it.url,
+                updated = it.updated,
+                title = it.updated,
+                description = it.description,
+                thumbnail = it.thumbnail
+        )
+    }.toTypedArray()
 }
